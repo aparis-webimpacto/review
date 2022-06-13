@@ -381,9 +381,43 @@ class Opiniones extends Module
     }
 
 
-    /**
-    * Add the CSS & JavaScript files you want to be loaded in the BO.
-    */
+    private function renderProductCommentsList($product)
+    {
+        $productCommentRepository = $this->context->controller->getContainer()->get('product_comment_repository');
+
+        $averageGrade = $productCommentRepository->getAverageGrade($product->id, (bool) Configuration::get('PRODUCT_COMMENTS_MODERATE'));
+        $commentsNb = $productCommentRepository->getCommentsNumber($product->id, (bool) Configuration::get('PRODUCT_COMMENTS_MODERATE'));
+        $isPostAllowed = $productCommentRepository->isPostAllowed($product->id, (int) $this->context->cookie->id_customer, (int) $this->context->cookie->id_guest);
+
+        $this->context->smarty->assign([
+            'post_allowed' => $isPostAllowed,
+            'usefulness_enabled' => Configuration::get('PRODUCT_COMMENTS_USEFULNESS'),
+            'average_grade' => $averageGrade,
+            'nb_comments' => $commentsNb,
+            'list_comments_url' => $this->context->link->getModuleLink(
+                'productcomments',
+                'ListComments',
+                ['id_product' => $product->id]
+            ),
+            'update_comment_usefulness_url' => $this->context->link->getModuleLink(
+                'productcomments',
+                'UpdateCommentUsefulness'
+            ),
+            'report_comment_url' => $this->context->link->getModuleLink(
+                'productcomments',
+                'ReportComment'
+            ),
+        ]);
+
+        return $this->context->smarty->fetch('module:productcomments/views/templates/hook/product-comments-list.tpl');
+    }
+
+    public function hookDisplayFooterProduct($params)
+    {
+        return $this->context->smarty->fetch($this->local_path.'views/templates/hook/footerproduct.tpl');
+        }
+
+
     public function hookBackOfficeHeader()
     {
         if (Tools::getValue('module_name') == $this->name) {

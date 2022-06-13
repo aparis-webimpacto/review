@@ -23,50 +23,12 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 
-namespace PrestaShop\Module\ProductComment\Entity;
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Table()
- * @ORM\Entity()
- */
-class ProductCommentGrade
-{
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="ProductComment")
-     * @ORM\JoinColumn(name="id_product_comment", referencedColumnName="id_product_comment")
-     */
-    private $comment;
-
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="grade", type="integer")
-     */
-    private $grade;
-
-    /**
-     * @param ProductComment $comment
-     * @param int $grade
-     */
-    public function __construct(
-        ProductComment $comment,
-        $grade
-    ) {
-        $this->comment = $comment;
-        $this->grade = $grade;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-}
+header('Location: ../');
+exit;

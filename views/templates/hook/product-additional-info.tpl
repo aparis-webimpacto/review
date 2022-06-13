@@ -1,5 +1,4 @@
-<?php
-/**
+{**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
  *
@@ -22,51 +21,31 @@
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
- */
+ *}
 
-namespace PrestaShop\Module\ProductComment\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Table()
- * @ORM\Entity()
- */
-class ProductCommentGrade
-{
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="ProductComment")
-     * @ORM\JoinColumn(name="id_product_comment", referencedColumnName="id_product_comment")
-     */
-    private $comment;
-
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="grade", type="integer")
-     */
-    private $grade;
-
-    /**
-     * @param ProductComment $comment
-     * @param int $grade
-     */
-    public function __construct(
-        ProductComment $comment,
-        $grade
-    ) {
-        $this->comment = $comment;
-        $this->grade = $grade;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-}
+{if $nb_comments != 0 || $post_allowed}
+<div class="product-comments-additional-info">
+  {if $nb_comments == 0}
+    {if $post_allowed}
+      <button class="btn btn-comment post-product-comment">
+        <i class="material-icons shopping-cart" data-icon="edit"></i>
+        {l s='Write your review' d='Modules.Productcomments.Shop'}
+      </button>
+    {/if}
+  {else}
+    {include file='module:productcomments/views/templates/hook/average-grade-stars.tpl' grade=$average_grade}
+    <div class="additional-links">
+      <a class="link-comment" href="#product-comments-list-header">
+        <i class="material-icons shopping-cart" data-icon="chat"></i>
+        {l s='Read user reviews' d='Modules.Productcomments.Shop'} ({$nb_comments})
+      </a>
+      {if $post_allowed}
+        <a class="link-comment post-product-comment" href="#product-comments-list-header">
+          <i class="material-icons shopping-cart" data-icon="edit"></i>
+          {l s='Write your review' d='Modules.Productcomments.Shop'}
+        </a>
+      {/if}
+    </div>
+  {/if}
+</div>
+{/if}

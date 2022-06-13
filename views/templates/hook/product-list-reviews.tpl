@@ -1,5 +1,4 @@
-<?php
-/**
+{**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
  *
@@ -22,51 +21,19 @@
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
- */
+ *}
 
-namespace PrestaShop\Module\ProductComment\Entity;
+{* Javascript is used to display each product grade, this allows every rating to be udpated as soon as they change *}
 
-use Doctrine\ORM\Mapping as ORM;
+<div class="product-list-reviews" data-id="{$product.id}" data-url="{$product_comment_grade_url nofilter}">
+  <div class="grade-stars small-stars"></div>
+  <div class="comments-nb"></div>
+</div>
 
-/**
- * @ORM\Table()
- * @ORM\Entity()
- */
-class ProductCommentGrade
-{
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="ProductComment")
-     * @ORM\JoinColumn(name="id_product_comment", referencedColumnName="id_product_comment")
-     */
-    private $comment;
-
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="grade", type="integer")
-     */
-    private $grade;
-
-    /**
-     * @param ProductComment $comment
-     * @param int $grade
-     */
-    public function __construct(
-        ProductComment $comment,
-        $grade
-    ) {
-        $this->comment = $comment;
-        $this->grade = $grade;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-}
+{if $nb_comments != 0}
+{* Rich snippet rating is displayed via php/smarty meaning it will be cached (for example on homepage) *}
+<div itemprop="aggregateRating" itemtype="http://schema.org/AggregateRating" itemscope>
+  <meta itemprop="reviewCount" content="{$nb_comments}" />
+  <meta itemprop="ratingValue" content="{$average_grade}" />
+</div>
+{/if}

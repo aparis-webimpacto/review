@@ -1,5 +1,4 @@
-<?php
-/**
+{**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
  *
@@ -22,51 +21,19 @@
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
- */
+ *}
 
-namespace PrestaShop\Module\ProductComment\Entity;
+{if $nb_comments != 0}
+  <script type="text/javascript">
+    const $ = jQuery;
+    $('#product-quickview-{$product.id}').insertAfter($('.quickview #product-description-short'));
+    $('#product-quickview-{$product.id} .grade-stars').rating({ grade: {$average_grade} });
+    $('#product-quickview-{$product.id} .comments-nb').html('({$nb_comments})');
+  </script>
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Table()
- * @ORM\Entity()
- */
-class ProductCommentGrade
-{
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="ProductComment")
-     * @ORM\JoinColumn(name="id_product_comment", referencedColumnName="id_product_comment")
-     */
-    private $comment;
-
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="grade", type="integer")
-     */
-    private $grade;
-
-    /**
-     * @param ProductComment $comment
-     * @param int $grade
-     */
-    public function __construct(
-        ProductComment $comment,
-        $grade
-    ) {
-        $this->comment = $comment;
-        $this->grade = $grade;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-}
+  <div id="product-quickview-{$product.id}" class="product-quickview-review">
+    <div class="grade-stars"></div>
+    <div class="comments-nb"></div>
+  </div>
+</div>
+{/if}
